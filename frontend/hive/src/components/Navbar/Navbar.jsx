@@ -1,6 +1,8 @@
 import React from 'react'
 import { GiTreeBeehive } from "react-icons/gi";
 import { IoEarth } from "react-icons/io5";
+import { TbMessage2Heart } from "react-icons/tb";
+import { RiNotification4Line } from "react-icons/ri";
 
 function Navbar() {
   return (
@@ -41,22 +43,16 @@ function Navbar() {
     <a className="btn btn-ghost text-xl pl-5"><GiTreeBeehive className='size-8'/> hive</a>
   </div>
   <div className="navbar-center pl-28 hidden lg:flex">
-    <ul className="menu menu-horizontal px-1">
-      <li><a> <IoEarth /> Explore</a></li>
+    <ul className="menu menu-horizontal px-1 font">
+      <li><a className='text-[15px]'> <IoEarth className='size-[15px]' /> Explore</a></li>
       <li>
-        <details>
-          <summary>Parent</summary>
-          <ul className="p-2">
-            <li><a>Submenu 1</a></li>
-            <li><a>Submenu 2</a></li>
-          </ul>
-        </details>
+        <a className='text-[15px]'><TbMessage2Heart className='size-[15px]' /> Messages</a> 
       </li>
-      <li><a>Item 3</a></li>
+      <li><a className='text-[15px]'><RiNotification4Line className='size-[15px]'/> Notifications</a></li>
     </ul>
   </div>
   <div className="navbar-end">
-    <a className="btn">Button</a>
+  <a className="btn btn-ghost text-[15px] font-normal border border-yellow-400 p-3">Login/SignUp</a>
   </div>
 </div>
     </div>
