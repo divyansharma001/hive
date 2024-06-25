@@ -8,7 +8,7 @@ function App() {
 
   return (
     <>
-   <div>
+   <div className='w-full h-screen bg-[#000000] text-[#FFDB00]'>
     <Navbar/>
     <Outlet/>
    </div>
