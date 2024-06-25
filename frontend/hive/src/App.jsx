@@ -1,15 +1,17 @@
 import './App.css'
+import Navbar from './components/Navbar/Navbar'
 import Sidebar from './components/Sidebar/Sidebar'
 import Content from './pages/Content/Content'
+import { Outlet } from 'react-router-dom'
 
 function App() {
 
   return (
     <>
-     <div className='grid grid-cols-12 gap-4'>
-      <div className='col-span-2'><Sidebar/></div>
-      <div className='col-span-10'><Content/></div>
-     </div>
+   <div>
+    <Navbar/>
+    <Outlet/>
+   </div>
     </>
   )
 }
