@@ -52,7 +52,8 @@ function Navbar() {
     </ul>
   </div>
   <div className="navbar-end">
-  <a className="btn btn-ghost text-[15px] font-normal border border-yellow-400 p-3">Login/SignUp</a>
+  <a className="btn btn-ghost text-[15px] font-normal  p-3 m-2">Login</a>
+  <a className="btn btn-ghost text-[15px] font-normal p-3 m-2">SignUp</a>
   </div>
 </div>
     </div>
