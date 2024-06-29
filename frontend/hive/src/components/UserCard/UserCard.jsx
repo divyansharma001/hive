@@ -21,8 +21,6 @@ function UserCard() {
      </div>
     <p className='text-[#a7acaf] pb-3'>Don't judge by this. This is still under making.</p>
    
-   
-   
    <div className='flex'>
     <div className='text-[#a7acaf] px-3 pt-2'>
      Posts
