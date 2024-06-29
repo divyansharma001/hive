@@ -17,7 +17,7 @@ function UserCard() {
     <p className='text-[#4b5359] text-sm'>@divyansharma001</p>
     <div className=' inline-flex'>
      <div className='text-[#4b5359] pt-1'> <CiLocationOn /></div>
-     <div className='text-[#4b5359] px-1'>Delhi</div>
+     <div className='text-[#4b5359] px-1'>Delhi, India</div>
      </div>
     <p>Don't judge by this. This is still under making.</p>
     <div className="card-actions">
