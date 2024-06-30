@@ -1,4 +1,18 @@
 import React from "react";
+ 
+
+const details = [
+  {
+    profilePic: "https://vectorseek.com/wp-content/uploads/2023/02/OpenAI-Logo-Vector.jpg",
+    name: "Open Ai",
+    userName: "@OpenAi",
+  },
+  {
+    profilePic: "https://vectorseek.com/wp-content/uploads/2023/02/OpenAI-Logo-Vector.jpg",
+    name: "Open Ai",
+    userName: "@OpenAi",
+  }
+]
 
 function PeopleCard() {
   return (
@@ -17,8 +31,9 @@ function PeopleCard() {
             </div>
            
             <div>
-
+              
             </div>
+
           </div>
         </div>
       </div>
