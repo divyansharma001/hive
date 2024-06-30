@@ -1,10 +1,14 @@
 import React from "react";
+import CreatePost from "../../components/Create/CreatePost";
 
 function Content() {
   return (
+    <>
     <div>
-     Content will be shown here
+      <CreatePost/>
     </div>
+     
+    </>
   );
 }
 

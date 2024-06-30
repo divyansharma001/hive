@@ -2,7 +2,11 @@ import React from 'react'
 
 function CreatePost() {
   return (
-    <div>Create the post from here</div>
+    <>
+   <div>
+   <textarea className="textarea textarea-warning" placeholder="I'm still thinking of a good placeholder here"></textarea>
+   </div>
+    </>
   )
 }
 
