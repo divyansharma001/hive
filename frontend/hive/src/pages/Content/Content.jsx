@@ -3,7 +3,7 @@ import React from "react";
 function Content() {
   return (
     <div>
-     content page
+     Content will be shown here
     </div>
   );
 }
