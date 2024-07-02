@@ -1,5 +1,4 @@
 import React from "react";
-import { IoAddSharp } from "react-icons/io5";
 
 const details = [
   {
@@ -48,7 +47,6 @@ function PeopleCard() {
             </div>
             </div>
                
-
                <div className="mt-1 ml-6 ">
                <button className="btn btn-outline w-24">FOLLOW</button>
                </div>

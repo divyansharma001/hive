@@ -10,7 +10,7 @@ function UserCard() {
     <img
       src="https://thumbs.dreamstime.com/b/cute-cat-portrait-square-photo-beautiful-white-closeup-105311158.jpg"
       alt="Profile Pic"
-      className="rounded-full size-24" />
+      className="rounded-full h-24 w-24" />
   </figure>
   <div className="card-body items-center text-center">
     <h2 className="text-xl font-medium -mt-6">Divyansh Sharma</h2>
