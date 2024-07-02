@@ -12,7 +12,7 @@ function CreatePost() {
           <img
             src="https://thumbs.dreamstime.com/b/cute-cat-portrait-square-photo-beautiful-white-closeup-105311158.jpg"
             alt="Profile Picture"
-            className="rounded-full h-20 w-20"
+            className="rounded-full h-20 w-20 border border-white"
           />
           <div className="pl-5 w-full">
             <textarea
