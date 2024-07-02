@@ -1,4 +1,5 @@
 import './App.css'
+import Footer from './components/Footer/Footer'
 import Navbar from './components/Navbar/Navbar'
 import Sidebar from './components/Sidebar/Sidebar'
 import Content from './pages/Content/Content'
@@ -11,6 +12,7 @@ function App() {
    <div className='w-full h-fit bg-[#000000] text-[#FFDB00]'>
     <Navbar/>
     <Outlet/>
+    <Footer/>
    </div>
     </>
   )
