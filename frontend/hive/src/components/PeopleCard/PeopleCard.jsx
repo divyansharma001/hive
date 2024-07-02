@@ -48,7 +48,7 @@ function PeopleCard() {
             </div>
                
                <div className="mt-1 ml-6 ">
-               <button className="btn btn-outline w-24">FOLLOW</button>
+               <button className="btn btn-outline text-[#FFDB00] w-24">FOLLOW</button>
                </div>
            
           </div>
