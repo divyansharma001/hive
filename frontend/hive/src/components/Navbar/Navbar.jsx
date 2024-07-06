@@ -3,6 +3,7 @@ import { GiTreeBeehive } from "react-icons/gi";
 import { IoEarth } from "react-icons/io5";
 import { TbMessage2Heart } from "react-icons/tb";
 import { RiNotification4Line } from "react-icons/ri";
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
@@ -48,8 +49,8 @@ function Navbar() {
     </ul>
   </div>
   <div className="navbar-end">
-  <a className="btn btn-ghost text-[15px] font-normal  p-3 m-2">Login</a>
-  <a className="btn btn-ghost text-[15px] font-normal p-3 m-2">SignUp</a>
+  <Link to={"login"} className="btn btn-ghost text-[15px] font-normal  p-3 m-2">Login</Link>
+  <Link to={"signup"} className="btn btn-ghost text-[15px] font-normal p-3 m-2">SignUp</Link>
   </div>
 </div>
     </div>

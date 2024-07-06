@@ -2,7 +2,16 @@ import React from 'react'
 
 function Login() {
   return (
-    <div>Login</div>
+    <>
+    <div className='grid-cols-2'>
+     <div>
+      Photo
+     </div>
+     <div>
+        form
+     </div>
+     </div>
+    </>
   )
 }
 
