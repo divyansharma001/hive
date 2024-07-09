@@ -1,0 +1,15 @@
+{
+  "name": "hive",
+  "version": "1.0.0",
+  "description": "hive is a social site allows users to connect",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Divyansh Sharma",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
