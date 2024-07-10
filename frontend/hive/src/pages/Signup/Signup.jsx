@@ -1,17 +1,43 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import {React, useState} from "react";
+import { Link } from "react-router-dom";
+import _ from 'lodash';
 
 function Signup() {
+
+  const [formdata, setFormdata] = useState({
+    email: '',
+    username: '',
+    password: '',
+  })
+
+  const debounceUpdateFromData = _.debounce((name,value)=>{
+    setFormdata((prevFormData)=>{
+      return{
+        ...prevFormData,
+        [name]: value
+      }
+    })
+  }, 500);
+
+ const handleChange = (event)=>{
+  const {name, value} = event.target;
+  debounceUpdateFromData(name, value);
+ }
+
+    console.log(formdata);
+  
+
+
   return (
     <>
-    <div className="relative py-16 bg-black">
+      <div className="relative py-16 bg-black">
         <div className="relative container m-auto px-6 text-[#FFDB00] md:px-12 xl:px-40">
           <div className="m-auto md:w-8/12 lg:w-6/12 xl:w-6/12">
             <div className="rounded-xl bg-black shadow-xl">
               <div className="p-6 sm:p-16">
                 <div className="space-y-4">
                   <h2 className="mb-8 text-2xl text-[#FFDB00] font-bold">
-                  Join Hive today and be <br /> part of the buzz!
+                    Join Hive today and be <br /> part of the buzz!
                   </h2>
                 </div>
                 <div className="mt-14 grid space-y-2">
@@ -25,7 +51,7 @@ function Signup() {
                       <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
                       <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
                     </svg>
-                    <input type="text" className="grow" placeholder="Email" />
+                    <input type="text" className="grow" name="email" placeholder="Email" onChange={handleChange} />
                   </label>
 
                   <label className="input input-bordered border-[#FFDB00] flex items-center gap-2 bg-black">
@@ -41,6 +67,8 @@ function Signup() {
                       type="text"
                       className="grow"
                       placeholder="Username"
+                      name="username"
+                      onChange={handleChange}
                     />
                   </label>
 
@@ -57,7 +85,7 @@ function Signup() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <input type="password" className="grow" value="password" />
+                    <input type="password" className="grow" value="password" name="password" onChange={handleChange} />
                   </label>
 
                   <button className="btn btn-ghost text-xl font-light">
@@ -83,7 +111,8 @@ function Signup() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default Signup
+
+export default Signup;
