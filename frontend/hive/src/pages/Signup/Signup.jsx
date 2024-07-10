@@ -1,6 +1,7 @@
 import { React, useState } from "react";
 import { Link } from "react-router-dom";
 import _ from "lodash";
+import { supabase } from "../../auth";
 
 function Signup() {
   const [formdata, setFormdata] = useState({
@@ -23,6 +24,31 @@ function Signup() {
     debounceUpdateFromData(name, value);
   };
 
+  const handleSubmit = async(e)=>{
+     e.preventDefault()
+    try {
+
+      const { data, error } = await supabase.auth.signUp(
+        {
+          email: formdata.email,  
+          password: formdata.password,
+          options: {
+            data: {
+              username: formdata.username,
+            }
+          }
+        }
+      )
+
+      alert('Check your email for verification link')
+
+      
+    } catch (error) {
+       alert(error)
+    }
+
+  }
+
   console.log(formdata);
 
   return (
@@ -37,7 +63,7 @@ function Signup() {
                     Join Hive today and be <br /> part of the buzz!
                   </h2>
                 </div>
-                <div className="mt-14 space-y-4 ">
+                <form onSubmit={handleSubmit}  className="mt-14 space-y-4 ">
                   <label className="input input-bordered border-[#FFDB00] flex items-center gap-2 bg-black">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -98,11 +124,11 @@ function Signup() {
                   </label>
      
                   <div className="flex flex-col items-center">
-                  <button className="btn btn-ghost text-xl font-light w-auto md:w-auto">
-                    Login
+                  <button type="submit" className="btn btn-ghost text-xl font-light w-auto md:w-auto">
+                    Signup
                   </button>
                   </div>
-                </div>
+                </form>
 
                 <div className="mt-32 space-y-4 text-gray-600 text-center sm:-mb-8">
                   <p className="text-sm">
