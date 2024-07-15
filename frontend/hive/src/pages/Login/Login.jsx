@@ -13,7 +13,7 @@ function Login() {
   debounceUpdateFromData(name,value);
   }
 
-  const debounceUpdateFromData = _.debounce((name, email)=>{
+  const debounceUpdateFromData = _.debounce((name, value)=>{
     setFormdata((prevFormdata)=>{
       return {
         ...prevFormdata,
