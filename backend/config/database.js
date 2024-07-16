@@ -13,7 +13,6 @@ const dbConfig = {
     port: process.env.DB_PORT,
 };
 
-console.log('Database configuration:', dbConfig);
 
 const db = new pg.Client(dbConfig);
 
