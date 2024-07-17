@@ -69,7 +69,7 @@ try {
   const isMatched = await bcryptjs.compare(password, user.password)
   if(!isMatched){
     return res.status(401).json({
-      message: "Incorrect Email or Password",
+      message: "Incorrect Credentials",
       success: true,
     })
   }
@@ -80,11 +80,18 @@ try {
 
   const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET, {expiresIn: "7d" });
   return res.status(201).cookie("token", token, {expiresIn: "7d", httpOnly: true}).json({
-    message:` Welcome back ${user.name}`,
+    message:`Welcome back ${user.name}`,
     success: true
   })
 
 } catch (error) {
   console.log(error)
 }
+}
+
+export const logout = (req, res) => {
+  return res.cookie("token", "", { expires: new Date(0) }).json({
+    message: "User logged out successfully",
+    success: true,
+  });
 }
