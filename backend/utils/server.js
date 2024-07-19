@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/v1/user", userRoute)
-app.use("api/vi/post", postRoute)
+app.use("/api/v1/post", postRoute)
 
 app.listen(port, ()=>{
     console.log(`Server is running on port ${port}`)
