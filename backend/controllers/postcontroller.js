@@ -144,3 +144,61 @@ export const bookmarks = async (req, res) => {
     });
   }
 };
+
+export const getMyProfile = async (req, res) => {
+  try {
+    const loggedInUserId = req.params.id;
+    const response = await db.query('SELECT id, email, name, username, bookmarks, followers, following FROM users WHERE id = $1', [loggedInUserId]);
+    const userDetails = response.rows[0];
+    return res.status(200).json({
+      message: "User details fetched successfully",
+      success: true,
+      userDetails,
+    });
+  } catch (error) {
+    console.error(`Error in getMyProfile function: ${error.message}`);
+    return res.status(500).json({
+      message: "Internal server error.",
+      success: false,
+    });
+  }
+};
+
+export const getOtherUserProfile = async (req, res) => {
+  try {
+    const loggedInUserId = req.params.id;
+    const otherUsers = await db.query('SELECT id, email, name, username, bookmarks, followers, following FROM users WHERE id != $1', [loggedInUserId]);
+    if(!otherUsers) {
+      return res.status(404).json({
+        message: "No other users found.",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      message: "User details fetched successfully",
+      success: true,
+      otherUsers,
+    });
+    
+  } catch (error) {
+    console.error(`Error in getOtherUserProfile function: ${error.message}`);
+    return res.status(500).json({
+      message: "Internal server error.",
+      success: false,
+    });
+  }
+};
+
+export const follow = async(req,res)=>{
+  try {
+
+    
+    
+  } catch (error) {
+    console.error(error.message)
+    res.status(404).json({
+      message: "Follow functionality isn't working",
+      success: false
+    })
+  }
+}
