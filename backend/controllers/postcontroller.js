@@ -192,7 +192,35 @@ export const getOtherUserProfile = async (req, res) => {
 export const follow = async(req,res)=>{
   try {
 
+    const loggedInUserId = req.body.id;
+    const userId = req.params.id;
+    const loggedInUser = await db.query("SELECT * FROM users WHERE id = $1", [
+      loggedInUserId
+    ])
+    const loggedInUserData = loggedInUser.rows[0]
+    const user = await db.query('SELECT * FROM users WHERE id = $1',[
+      userId
+    ])
+    const userData = user.rows[0]
+    console.log(userData.name);
+    console.log(loggedInUserData)
+
+    if(!userData.followers.includes(+loggedInUserId)){
+      await db.query("UPDATE users SET followers = array_append(followers, $1::jsonb) WHERE id = $2",
+        [userId, loggedInUserId]);
+
+       await db.query("UPDATE users SET following = array_append(following, $1::jsonb) WHERE id = $2",
+        [loggedInUserId, userId],) 
+
+    }else{
+      return res.status(404).json({
+        message: `User already follows to ${userData.name}`
+      })
+    }
     
+    return res.status(200).json({
+      message: `${loggedInUserData.name} just followed to ${userData.name}`
+    })
     
   } catch (error) {
     console.error(error.message)
