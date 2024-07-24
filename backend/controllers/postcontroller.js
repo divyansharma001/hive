@@ -91,142 +91,40 @@ console.log(typeof(loggedInUserIdJsonb));
   }
 };
 
-
-export const bookmarks = async (req, res) => {
+export const getAllPosts = async (req, res) => {
   try {
-    const loggedInUserId = req.body.id;
-    const postId = req.params.id;
+    const id = req.params.id; // ID of logged in user
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1; 
+    const offset = (page - 1) * limit;
 
-    console.log(`Received request to bookmark post. User ID: ${loggedInUserId}, Post ID: ${postId}`);
+ 
+    const loggedInUser = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+    const loggedInUserData = loggedInUser.rows[0];
 
-    const response = await db.query('SELECT * FROM users WHERE id = $1', [loggedInUserId]);
-    const userDetails = response.rows[0];
-
-    if (!userDetails) {
-      return res.status(404).json({
-        message: "User not found.",
-        success: false,
-      });
+    if (!loggedInUserData) {
+      return res.status(404).json({ message: "User not found" });
     }
 
-    console.log(`User details: ${JSON.stringify(userDetails)}`);
+  
+    const allUserIds = [id, ...loggedInUserData.following];
+    
+    const allPosts = await db.query(
+      'SELECT * FROM posts WHERE user_id = ANY($1) ORDER BY created_at DESC LIMIT $2 OFFSET $3',
+      [allUserIds, limit, offset]
+    );
 
-    const loggedInUserIdJsonb = JSON.stringify(loggedInUserId);
+    return res.status(200).json({
+      posts: allPosts.rows,
+      hasMore: allPosts.rows.length === limit,
+      nextPage: page + 1
+    });
 
-    console.log(userDetails.bookmarks.includes(+loggedInUserIdJsonb));
-
-    if (userDetails.bookmarks.includes(+loggedInUserIdJsonb)) {
-      console.log(`User has already bookmarked the post. Removing bookmark.`);
-      await db.query(
-        "UPDATE users SET bookmarks = array_remove(bookmarks, $1::jsonb) WHERE id = $2",
-        [postId, loggedInUserId]
-      );
-      return res.status(200).json({
-        message: "Post removed from bookmarks",
-        success: true,
-      });
-    } else {
-      console.log(`User has not bookmarked the post yet. Adding bookmark.`);
-      await db.query(
-        "UPDATE users SET bookmarks = array_append(bookmarks, $1::jsonb) WHERE id = $2",
-        [postId, loggedInUserId]
-      );
-      return res.status(201).json({
-        message: "Post bookmarked successfully",
-        success: true,
-      });
-    }
   } catch (error) {
-    console.error(`Error in bookmarks function: ${error.message}`);
+    console.error(error.message);
     return res.status(500).json({
-      message: "Internal server error.",
-      success: false,
+      message: "Error fetching posts",
+      error: error.message
     });
   }
 };
-
-export const getMyProfile = async (req, res) => {
-  try {
-    const loggedInUserId = req.params.id;
-    const response = await db.query('SELECT id, email, name, username, bookmarks, followers, following FROM users WHERE id = $1', [loggedInUserId]);
-    const userDetails = response.rows[0];
-    return res.status(200).json({
-      message: "User details fetched successfully",
-      success: true,
-      userDetails,
-    });
-  } catch (error) {
-    console.error(`Error in getMyProfile function: ${error.message}`);
-    return res.status(500).json({
-      message: "Internal server error.",
-      success: false,
-    });
-  }
-};
-
-export const getOtherUserProfile = async (req, res) => {
-  try {
-    const loggedInUserId = req.params.id;
-    const otherUsers = await db.query('SELECT id, email, name, username, bookmarks, followers, following FROM users WHERE id != $1', [loggedInUserId]);
-    if(!otherUsers) {
-      return res.status(404).json({
-        message: "No other users found.",
-        success: false,
-      });
-    }
-    return res.status(200).json({
-      message: "User details fetched successfully",
-      success: true,
-      otherUsers,
-    });
-    
-  } catch (error) {
-    console.error(`Error in getOtherUserProfile function: ${error.message}`);
-    return res.status(500).json({
-      message: "Internal server error.",
-      success: false,
-    });
-  }
-};
-
-export const follow = async(req,res)=>{
-  try {
-
-    const loggedInUserId = req.body.id;
-    const userId = req.params.id;
-    const loggedInUser = await db.query("SELECT * FROM users WHERE id = $1", [
-      loggedInUserId
-    ])
-    const loggedInUserData = loggedInUser.rows[0]
-    const user = await db.query('SELECT * FROM users WHERE id = $1',[
-      userId
-    ])
-    const userData = user.rows[0]
-    console.log(userData.name);
-    console.log(loggedInUserData)
-
-    if(!userData.followers.includes(+loggedInUserId)){
-      await db.query("UPDATE users SET followers = array_append(followers, $1::jsonb) WHERE id = $2",
-        [userId, loggedInUserId]);
-
-       await db.query("UPDATE users SET following = array_append(following, $1::jsonb) WHERE id = $2",
-        [loggedInUserId, userId],) 
-
-    }else{
-      return res.status(404).json({
-        message: `User already follows to ${userData.name}`
-      })
-    }
-    
-    return res.status(200).json({
-      message: `${loggedInUserData.name} just followed to ${userData.name}`
-    })
-    
-  } catch (error) {
-    console.error(error.message)
-    res.status(404).json({
-      message: "Follow functionality isn't working",
-      success: false
-    })
-  }
-}
