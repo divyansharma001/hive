@@ -42,7 +42,9 @@ export const likeOrDislike = async (req, res) => {
     const loggedInUserId = req.body.id;
     const postId = req.params.id;
 
-    console.log(`Received request to like/dislike post. User ID: ${loggedInUserId}, Post ID: ${postId}`);
+    console.log(
+      `Received request to like/dislike post. User ID: ${loggedInUserId}, Post ID: ${postId}`
+    );
 
     const posts = await db.query("SELECT * FROM posts WHERE id=$1", [postId]);
     const post = posts.rows[0];
@@ -55,15 +57,17 @@ export const likeOrDislike = async (req, res) => {
     }
 
     const loggedInUserIdJsonb = JSON.stringify(loggedInUserId);
-console.log(typeof(loggedInUserIdJsonb));
+    console.log(typeof loggedInUserIdJsonb);
     console.log(`Post found: ${JSON.stringify(post)}`);
-    
-    console.log(`Checking if user has already liked the post. User ID JSONB: ${loggedInUserIdJsonb}`);
+
+    console.log(
+      `Checking if user has already liked the post. User ID JSONB: ${loggedInUserIdJsonb}`
+    );
 
     console.log(post.likes.includes(+loggedInUserIdJsonb));
     if (post.likes.includes(+loggedInUserIdJsonb)) {
       console.log(post.likes.includes(+loggedInUserIdJsonb));
-      post.likes.includes(loggedInUserIdJsonb, "json")
+      post.likes.includes(loggedInUserIdJsonb, "json");
       console.log(`User has already liked the post. Removing like.`);
       await db.query(
         "UPDATE posts SET likes = array_remove(likes, $1::jsonb) WHERE id = $2",
@@ -95,36 +99,35 @@ export const getAllPosts = async (req, res) => {
   try {
     const id = req.params.id; // ID of logged in user
     const limit = parseInt(req.query.limit) || 10;
-    const page = parseInt(req.query.page) || 1; 
+    const page = parseInt(req.query.page) || 1;
     const offset = (page - 1) * limit;
 
- 
-    const loggedInUser = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+    const loggedInUser = await db.query("SELECT * FROM users WHERE id = $1", [
+      id,
+    ]);
     const loggedInUserData = loggedInUser.rows[0];
 
     if (!loggedInUserData) {
       return res.status(404).json({ message: "User not found" });
     }
 
-  
     const allUserIds = [id, ...loggedInUserData.following];
-    
+
     const allPosts = await db.query(
-      'SELECT * FROM posts WHERE user_id = ANY($1) ORDER BY created_at DESC LIMIT $2 OFFSET $3',
+      "SELECT * FROM posts WHERE user_id = ANY($1) ORDER BY created_at DESC LIMIT $2 OFFSET $3",
       [allUserIds, limit, offset]
     );
 
     return res.status(200).json({
       posts: allPosts.rows,
       hasMore: allPosts.rows.length === limit,
-      nextPage: page + 1
+      nextPage: page + 1,
     });
-
   } catch (error) {
     console.error(error.message);
     return res.status(500).json({
       message: "Error fetching posts",
-      error: error.message
+      error: error.message,
     });
   }
 };
