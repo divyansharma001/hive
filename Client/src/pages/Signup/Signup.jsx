@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import { Link } from "react-router-dom";
 import _ from "lodash";
-import { supabase } from "../../auth";
+import axios from "axios";
 
 function Signup() {
   const [formdata, setFormdata] = useState({
@@ -25,33 +25,18 @@ function Signup() {
     debounceUpdateFromData(name, value);
   };
 
-  const handleSubmit = async(e)=>{
-     e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-
-      const { data, error } = await supabase.auth.signUp(
-        {
-          email: formdata.email,  
-          password: formdata.password,
-          options: {
-            data: {
-              username: formdata.username,
-              name: formdata.name,
-            }
-          }
-        }
-      )
-
-      alert('Check your email for verification link')
-
-      
+      const res = await axios.post(
+        `${import.meta.env.VITE_USER_API_END_POINT}/register`,
+        { formdata }
+      );
+      console.log("res", res);
     } catch (error) {
-       alert(error)
+      console.error(error);
     }
-
-  }
-
-  console.log(formdata);
+  };
 
   return (
     <>
@@ -65,7 +50,7 @@ function Signup() {
                     Join Hive today and be <br /> part of the buzz!
                   </h2>
                 </div>
-                <form onSubmit={handleSubmit}  className="mt-14 space-y-4 ">
+                <form onSubmit={handleSubmit} className="mt-14 space-y-4 ">
                   <label className="input input-bordered border-[#FFDB00] flex items-center gap-2 bg-black">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -143,11 +128,14 @@ function Signup() {
                       onChange={handleChange}
                     />
                   </label>
-     
+
                   <div className="flex flex-col items-center">
-                  <button type="submit" className="btn btn-ghost text-xl font-light w-auto md:w-auto">
-                    Signup
-                  </button>
+                    <button
+                      type="submit"
+                      className="btn btn-ghost text-xl font-light w-auto md:w-auto"
+                    >
+                      Signup
+                    </button>
                   </div>
                 </form>
 
