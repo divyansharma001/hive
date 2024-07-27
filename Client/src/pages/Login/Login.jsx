@@ -1,31 +1,42 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import _ from 'lodash'
+import _ from "lodash";
+import axios from "axios";
 
 function Login() {
+  const [loading, setLoading] = useState(false);
   const [formdata, setFormdata] = useState({
-    email:'',
-    password: '',
-  })
+    email: "",
+    password: "",
+  });
 
-  const handleChange = (event)=>{
-  const {name, value} = event.target;
-  debounceUpdateFromData(name,value);
-  }
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    debounceUpdateFromData(name, value);
+  };
 
-  const debounceUpdateFromData = _.debounce((name, value)=>{
-    setFormdata((prevFormdata)=>{
+  const debounceUpdateFromData = _.debounce((name, value) => {
+    setFormdata((prevFormdata) => {
       return {
         ...prevFormdata,
-        [name]:value,
-      }
-    })
-  }, 500)
+        [name]: value,
+      };
+    });
+  }, 500);
 
-  const handleSubmit = (e)=>{
-  e.preventDefault()
-  }
-
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_USER_API_END_POINT}/login`,
+        formdata
+      );
+      console.log(res, 'res');
+      setLoading(false);
+    } catch (error) {
+      console.error(error)
+    }
+  };
 
   return (
     <>
@@ -36,10 +47,10 @@ function Login() {
               <div className="p-6 sm:p-16">
                 <div className="space-y-4">
                   <h2 className="mb-8 text-2xl text-[#FFDB00] font-bold">
-                  Log in to Hive and keep <br /> the buzz going!
+                    Log in to Hive and keep <br /> the buzz going!
                   </h2>
                 </div>
-                <form onSubmit={handleSubmit}  className="mt-14 space-y-4 ">
+                <form onSubmit={handleSubmit} className="mt-14 space-y-4 ">
                   <label className="input input-bordered border-[#FFDB00] flex items-center gap-2 bg-black">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -80,11 +91,38 @@ function Login() {
                       onChange={handleChange}
                     />
                   </label>
-     
+
                   <div className="flex flex-col items-center">
-                  <button type="submit" className="btn btn-ghost text-xl font-light w-auto md:w-auto">
-                    Login
-                  </button>
+                  <button
+                      type="submit"
+                      className="btn btn-ghost text-xl font-light w-auto md:w-auto"
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <svg
+                          className="animate-spin h-5 w-5 mr-3 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                          ></path>
+                        </svg>
+                      ) : (
+                        "Login"
+                      )}
+                    </button>
                   </div>
                 </form>
 
