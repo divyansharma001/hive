@@ -5,9 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-  "start": "node index.js",
-  "dev": "nodemon index.js"
-},
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
   "author": "Divyansh Sharma",
   "license": "ISC",
   "dependencies": {
@@ -16,6 +16,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "fast-jwt": "^4.0.2",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.12.0"
   }

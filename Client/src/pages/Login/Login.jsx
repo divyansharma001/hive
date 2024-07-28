@@ -24,6 +24,8 @@ function Login() {
     });
   }, 500);
 
+  console.log(formdata)
+
   const handleSubmit = async(e) => {
     e.preventDefault();
     setLoading(true);
@@ -31,8 +33,8 @@ function Login() {
       const res = await axios.post(`${import.meta.env.VITE_USER_API_END_POINT}/login`,
         formdata
       );
-      console.log(res, 'res');
       setLoading(false);
+      console.log(res, 'res');
     } catch (error) {
       console.error(error)
     }

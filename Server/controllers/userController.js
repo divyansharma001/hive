@@ -1,6 +1,10 @@
 import db from "../config/database.js";
 import bcryptjs from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { createSigner, createVerifier } from "fast-jwt";
+
+const signer = createSigner({ key: process.env.TOKEN_SECRET, expiresIn: "7d" });
+const verifier = createVerifier({ key: process.env.TOKEN_SECRET });
+const pepper = process.env.PASSWORD_PEPPER;
 
 export const Register = async (req, res) => {
   try {
@@ -24,7 +28,7 @@ export const Register = async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcryptjs.hash(password, 18);
+    const hashedPassword = await bcryptjs.hash(password + pepper, 12);
 
     await db.query(
       "INSERT INTO users (email, name, username, password) VALUES ($1,$2,$3,$4)",
@@ -41,52 +45,53 @@ export const Register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
+  const startTime = Date.now();
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(401).json({
-        message: "All fields are required",
-      });
+      return res.status(401).json({ message: "All fields are required" });
     }
 
-    const userResult = await db.query("SELECT * FROM users WHERE email = $1", [
-      email,
-    ]);
+    const userResult = await db.query(
+      "SELECT id, name, password FROM users WHERE email = $1",
+      [email]
+    );
 
     const user = userResult.rows[0];
-
     if (!user) {
-      return res.status(401).json({
-        message: "User does not exists with this email",
-        success: false,
-      });
+      return res
+        .status(401)
+        .json({
+          message: "User does not exist with this email",
+          success: false,
+        });
     }
 
-    const isMatched = await bcryptjs.compare(password, user.password);
+    const isMatched = await bcryptjs.compare(password + pepper, user.password);
+
     if (!isMatched) {
-      return res.status(401).json({
-        message: "Incorrect Credentials",
-        success: true,
-      });
+      return res
+        .status(401)
+        .json({ message: "Incorrect Credentials", success: false });
     }
 
-    const tokenData = {
-      userId: user.id,
-    };
+    const token = signer({ userId: user.id });
 
-    const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET, {
-      expiresIn: "7d",
-    });
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    }); // 7 days
     return res
-      .status(201)
-      .cookie("token", token, { expiresIn: "7d", httpOnly: true })
-      .json({
-        message: `Welcome back ${user.name}`,
-        success: true,
-      });
+      .status(200)
+      .json({ message: `Welcome back ${user.name}`, success: true });
   } catch (error) {
-    console.log(error);
+    console.error(`[${Date.now() - startTime}ms] Login error:`, error);
+    return res
+      .status(500)
+      .json({ message: "An error occurred during login", success: false });
+  } finally {
+    console.log(`[${Date.now() - startTime}ms] Total login time`);
   }
 };
 
@@ -257,5 +262,3 @@ export const follow = async (req, res) => {
     });
   }
 };
-
- 
