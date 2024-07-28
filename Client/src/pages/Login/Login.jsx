@@ -36,7 +36,7 @@ const navigate = useNavigate()
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post(`${import.meta.env.VITE_USER_API_END_POINT}/login`,
+      const res = await axios.post(`${import.meta.env.VITE_USER_API_END_POINT}/api/v1/user/login`,
         formdata,
         {headers: {
           'Content-type': "application/json"
