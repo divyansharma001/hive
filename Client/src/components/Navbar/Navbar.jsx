@@ -37,7 +37,7 @@ function Navbar() {
       </ul>
     </div>
     
-    <a className="btn btn-ghost text-xl pl-5"><GiTreeBeehive className='size-8'/> hive</a>
+    <Link className="btn btn-ghost text-xl pl-5" to={'/'}><GiTreeBeehive className='size-8'/> hive</Link>
   </div>
   <div className="navbar-center pl-28 hidden lg:flex">
     <ul className="menu menu-horizontal px-1 font">

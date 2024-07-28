@@ -1,7 +1,9 @@
 import { React, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import _ from "lodash";
 import axios from "axios";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 function Signup() {
   const [formdata, setFormdata] = useState({
@@ -11,6 +13,7 @@ function Signup() {
     password: "",
   });
 
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false);
 
   const debounceUpdateFromData = _.debounce((name, value) => {
@@ -27,25 +30,36 @@ function Signup() {
     debounceUpdateFromData(name, value);
   };
 
-  console.log(formdata);
-
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_USER_API_END_POINT}/register`,
-         formdata 
+         formdata,
+         {
+          headers: {
+            'Content-type': "application/json"
+          },
+          withCredentials: true
+         }
       );
+      if(res.data.success){
+       toast.success(res.data.message)
+        navigate('/login')
+      }
       console.log("res", res);
       setLoading(false);
     } catch (error) {
+      setLoading(false);
+      toast.error(error.response?.data?.message || 'An error occurred');
       console.error(error);
     }
   };
 
   return (
     <>
+  
       <div className="relative py-16 bg-black">
         <div className="relative container m-auto px-6 text-[#FFDB00] md:px-12 xl:px-40">
           <div className="m-auto md:w-8/12 lg:w-6/12 xl:w-6/12">
