@@ -35,7 +35,7 @@ function Signup() {
     setLoading(true);
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_USER_API_END_POINT}/api/v1/user/register`,
+        `${import.meta.env.VITE_USER_API_END_POINT}/register`,
          formdata,
          {
           headers: {
