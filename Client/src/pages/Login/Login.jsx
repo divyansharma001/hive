@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import _ from "lodash";
 import axios from "axios";
 import toast, { Toaster } from 'react-hot-toast';
+import { useDispatch } from "react-redux";
+import { getUser } from "../../redux/userSlice";
 
 
 function Login() {
@@ -11,6 +13,7 @@ function Login() {
     email: "",
     password: "",
   });
+  const dispatch = useDispatch()
 
 const navigate = useNavigate()
 
@@ -40,6 +43,7 @@ const navigate = useNavigate()
         },
         withCredentials: true,
       });
+      dispatch(getUser(res?.data?.user))
       if(res.data.success){
         toast.success(res.data.message)
       }

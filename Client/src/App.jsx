@@ -3,9 +3,15 @@ import Footer from './components/Footer/Footer'
 import Navbar from './components/Navbar/Navbar'
 import { Outlet } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast';
+import useGetProfile from './hooks/useGetProfile';
 
 
 function App() {
+
+  //custom hooks
+
+  const id = "10"
+  useGetProfile(id);
 
   return (
     <>

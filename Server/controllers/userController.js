@@ -84,7 +84,7 @@ export const login = async (req, res) => {
     }); // 7 days
     return res
       .status(200)
-      .json({ message: `Welcome back ${user.name}`, success: true });
+      .json({ message: `Welcome back ${user.name}`, user , success: true });
   } catch (error) {
     console.error(`[${Date.now() - startTime}ms] Login error:`, error);
     return res
