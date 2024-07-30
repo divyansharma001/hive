@@ -6,7 +6,6 @@ function PeopleCard() {
   const { user, otherUsers } = useSelector((store) => store.user);
   useGetOtherUsers(user?.id);
 
-  console.log('other', otherUsers);
 
   return (
     <div className="card bg-[rgb(15,16,18)] w-80 shadow-xl ml-12 text-white">

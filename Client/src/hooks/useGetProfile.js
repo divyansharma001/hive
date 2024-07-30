@@ -16,7 +16,7 @@ const useGetProfile = (id) => {
         }
       );
       dispatch(getMyProfile(res?.data?.userDetails));
-      console.log('dispatched profile', res?.data?.userDetails)
+
     } catch (error) {
       console.error(error);
     }

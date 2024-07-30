@@ -8,7 +8,6 @@ function UserCard() {
   const { user, profile } = useSelector((store) => store.user);
   useGetProfile(user?.id);
 
-
   return (
     <>
     <div>
@@ -30,16 +29,16 @@ function UserCard() {
    
    <div className='flex'>
     <div className='text-[#a7acaf] px-3 pt-2'>
-     Posts
-     <div className='text-white'>5</div>
+     Bookmarks 
+     <div className='text-white'>{profile?.bookmarks.length}</div>
     </div>
     <div className='text-[#a7acaf] px-3 pt-2'>
      Followers
-     <div className='text-white'>27</div>
+     <div className='text-white'>{profile?.followers.length}</div>
     </div>
     <div className='text-[#a7acaf] px-3 pt-2'>
      Following
-     <div className='text-white'>18</div>
+     <div className='text-white'>{profile?.following.length}</div>
     </div>
    </div>
   

@@ -16,7 +16,6 @@ const useGetOtherUsers = (id) => {
         }
       );
       dispatch(getOtherUsers(res?.data?.otherUsers.rows));
-      console.log('dispatched other users', res?.data?.otherUsers.rows);
     } catch (error) {
       console.error(error);
     }
