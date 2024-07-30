@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import useGetOtherUsers from "../../hooks/useGetOtherUsers";
 
 const details = [
   {
@@ -22,41 +24,42 @@ const details = [
 ];
 
 function PeopleCard() {
+
+  const {user} = useSelector(store=>store.user);
+  useGetOtherUsers(user?.id)
+
   return (
     <>
       <div className="card bg-[rgb(15,16,18)] w-80 shadow-xl ml-12 text-white">
         <div className="card-body  ">
-          <h2 className="font-semibold text-xl items-center text-center">Who to follow</h2>
- 
-        {details.map((detail, index)=>(
-          <div className="flex pt-2" key={index}>
-            <div> 
-              <img
-                src={detail.profilePic}
-                alt=""
-                className="w-14 h-14 rounded-full"
-              />
-            </div>
-              
-              <div >
-            <div className="font-semibold ml-3">
-              {detail.name}
-            </div>
-            <div className="text-[#a7acaf] pl-3 text-sm">
-              {detail.userName}
-            </div>
-            </div>
-               
-               <div className="mt-1 ml-6 ">
-               <button className="btn btn-outline text-[#FFDB00] w-24">FOLLOW</button>
-               </div>
-           
-          </div>
-        ))}
+          <h2 className="font-semibold text-xl items-center text-center">
+            Who to follow
+          </h2>
 
+          {details.map((detail, index) => (
+            <div className="flex pt-2" key={index}>
+              <div>
+                <img
+                  src={detail.profilePic}
+                  alt=""
+                  className="w-14 h-14 rounded-full"
+                />
+              </div>
 
-          
+              <div>
+                <div className="font-semibold ml-3">{detail.name}</div>
+                <div className="text-[#a7acaf] pl-3 text-sm">
+                  {detail.userName}
+                </div>
+              </div>
 
+              <div className="mt-1 ml-6 ">
+                <button className="btn btn-outline text-[#FFDB00] w-24">
+                  FOLLOW
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </>

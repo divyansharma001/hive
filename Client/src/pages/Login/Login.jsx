@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import _ from "lodash";
 import axios from "axios";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { getUser } from "../../redux/userSlice";
-
 
 function Login() {
   const [loading, setLoading] = useState(false);
@@ -13,9 +12,9 @@ function Login() {
     email: "",
     password: "",
   });
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -31,35 +30,35 @@ const navigate = useNavigate()
     });
   }, 500);
 
-
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post(`${import.meta.env.VITE_USER_API_END_POINT}/login`,
+      const res = await axios.post(
+        `${import.meta.env.VITE_USER_API_END_POINT}/login`,
         formdata,
-        {headers: {
-          'Content-type': "application/json"
-        },
-        withCredentials: true,
-      });
-      dispatch(getUser(res?.data?.user))
-      if(res.data.success){
-        toast.success(res.data.message)
+        {
+          headers: {
+            "Content-type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      dispatch(getUser(res?.data?.user));
+      if (res.data.success) {
+        toast.success(res.data.message);
       }
       setLoading(false);
-     navigate('/')
-      
+      navigate("/");
     } catch (error) {
       setLoading(false);
-      toast.error(error.response?.data?.message || 'An error occurred');
-      console.error(error)
+      toast.error(error.response?.data?.message || "An error occurred");
+      console.error(error);
     }
   };
 
   return (
     <>
-   
       <div className="relative py-16 bg-black">
         <div className="relative container m-auto px-6 text-[#FFDB00] md:px-12 xl:px-40">
           <div className="m-auto md:w-8/12 lg:w-6/12 xl:w-6/12">
@@ -113,7 +112,7 @@ const navigate = useNavigate()
                   </label>
 
                   <div className="flex flex-col items-center">
-                  <button
+                    <button
                       type="submit"
                       className="btn btn-ghost text-xl font-light w-auto md:w-auto"
                       disabled={loading}

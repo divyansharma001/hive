@@ -4,7 +4,6 @@ import _ from "lodash";
 import axios from "axios";
 import toast, { Toaster } from 'react-hot-toast';
 
-
 function Signup() {
   const [formdata, setFormdata] = useState({
     email: "",

@@ -1,7 +1,14 @@
 import React from 'react'
 import { CiLocationOn } from "react-icons/ci";
+import { useSelector } from 'react-redux';
+import useGetProfile from '../../hooks/useGetProfile'
 
 function UserCard() {
+
+  const { user, profile } = useSelector((store) => store.user);
+  useGetProfile(user?.id);
+
+
   return (
     <>
     <div>
@@ -13,8 +20,8 @@ function UserCard() {
       className="rounded-full h-24 w-24" />
   </figure>
   <div className="card-body items-center text-center">
-    <h2 className="text-xl font-medium -mt-6">Divyansh Sharma</h2>
-    <p className='text-[#a7acaf] text-sm pb-1'>@divyansharma001</p>
+    <h2 className="text-xl font-medium -mt-6">{profile?.name}</h2>
+    <p className='text-[#a7acaf] text-sm pb-1'>@{profile?.username}</p>
     <div className=' inline-flex'>
      <div className='text-[#a7acaf] pt-1'> <CiLocationOn /></div>
      <div className='text-[#a7acaf] px-1'>Delhi, India</div>
