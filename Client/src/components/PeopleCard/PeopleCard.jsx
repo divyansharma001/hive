@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import useGetOtherUsers from "../../hooks/useGetOtherUsers";
+import PeopleCardLoader from "../Loaders/PeopleCardLoader";
 
 function PeopleCard() {
   const { user, otherUsers } = useSelector((store) => store.user);
@@ -12,7 +13,9 @@ function PeopleCard() {
       <div className="card-body">
         <h2 className="font-semibold text-xl text-center">Who to follow</h2>
 
-        {otherUsers?.map((detail, index) => (
+        {otherUsers? 
+        <div>
+         {otherUsers?.map((detail, index) => (
           <div
             className="flex items-center py-2 space-x-4"
             key={index}
@@ -30,7 +33,21 @@ function PeopleCard() {
               FOLLOW
             </button>
           </div>
-        ))}
+        ))} </div> : 
+       <div >
+        <div className='flex items-center justify-center pt-7'>
+        <PeopleCardLoader/>
+        </div>
+        <div className='flex items-center justify-center'>
+        <PeopleCardLoader/>
+        </div>
+        <div className='flex items-center justify-center'>
+        <PeopleCardLoader/>
+        </div>
+        </div>
+         }
+
+       
       </div>
     </div>
   );
