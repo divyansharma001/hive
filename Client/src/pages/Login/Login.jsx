@@ -152,9 +152,9 @@ function Login() {
                       Register here
                     </Link>{" "}
                     and confirm you have read our{" "}
-                    <a href="#" className="underline">
+                    <Link to={'/'} className="underline">
                       Privacy and Cookie Statement
-                    </a>
+                    </Link>
                   </p>
                 </div>
               </div>
