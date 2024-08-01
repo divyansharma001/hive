@@ -4,7 +4,7 @@ import { createSigner } from "fast-jwt";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const signer = createSigner({ key: process.env.TOKEN_SECRET, expiresIn: "7d" });
-const googleAuthMarker = 'GOOGLE_AUTH_USER';
+const googleAuthMarker = process.env.GOOGLE_AUTH_USER;
 
 export const googleLogin = async (req, res) => {
 
