@@ -15,7 +15,7 @@ function UserCard() {
           <div className="card bg-[rgb(15,16,18)] w-80 shadow-xl ml-12 text-white">
             <figure className="px-10 pt-10">
               <img
-                src="https://thumbs.dreamstime.com/b/cute-cat-portrait-square-photo-beautiful-white-closeup-105311158.jpg"
+               src={profile?.profile_picture ? profile?.profile_picture : "https://t4.ftcdn.net/jpg/00/65/77/27/360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.webp"}
                 alt="Profile Pic"
                 className="rounded-full h-24 w-24"
               />
@@ -30,10 +30,10 @@ function UserCard() {
                   {" "}
                   <CiLocationOn />
                 </div>
-                <div className="text-[#a7acaf] px-1">Delhi, India</div>
+                <div className="text-[#a7acaf] px-1">{profile?.location ? profile?.location : "Milkyway"}</div>
               </div>
               <p className="text-[#a7acaf] pb-3">
-                Don't judge by this. This is still under making.
+                {profile?.bio ? profile?.bio : "Hey let's connect 👀!!" }
               </p>
 
               <div className="flex">

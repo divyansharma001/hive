@@ -9,6 +9,7 @@ import {
   getOtherUserProfile,
 } from "../controllers/userController.js";
 import isAuthenticated from "../config/auth.js";
+import { googleLogin } from "../controllers/googleAuthController.js";
 
 const router = express.Router();
 
@@ -21,6 +22,6 @@ router
   .route("/profile/otheruser/:id")
   .get(isAuthenticated, getOtherUserProfile);
 router.route("/follow/:id").post(isAuthenticated, follow);
-
+router.route("/google-login").post(googleLogin);
 
 export default router;

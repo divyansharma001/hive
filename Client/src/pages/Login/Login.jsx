@@ -4,7 +4,8 @@ import _ from "lodash";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { getUser } from "../../redux/userSlice";
+import { getUser, setUser } from "../../redux/userSlice";
+import GoogleLoginButton from "../../components/Buttons/GoogleLoginButton";
 
 function Login() {
   const [loading, setLoading] = useState(false);
@@ -45,6 +46,7 @@ function Login() {
         }
       );
       dispatch(getUser(res?.data?.user));
+      dispatch(setUser(response?.data?.user));
       if (res.data.success) {
         toast.success(res.data.message);
       }
@@ -142,6 +144,7 @@ function Login() {
                         "Login"
                       )}
                     </button>
+                    <GoogleLoginButton/>
                   </div>
                 </form>
 

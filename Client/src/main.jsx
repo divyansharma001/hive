@@ -15,13 +15,20 @@ import Login from './pages/Login/Login.jsx'
 import Signup from './pages/Signup/Signup.jsx'
 import {Provider} from 'react-redux'
 import store from './redux/store.js'
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App/>}>
-      <Route path='' element={<Homepage/>}/>
       <Route path='login' element={<Login/>}/>
       <Route path='signup' element={<Signup/>}/>
+       
+      <Route element={<ProtectedRoute/>}>
+
+      <Route path='' element={<Homepage/>}/>
+
+      </Route>
+      
     </Route>
   )
 )
