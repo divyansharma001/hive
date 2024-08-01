@@ -3,6 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import _ from "lodash";
 import axios from "axios";
 import toast, { Toaster } from 'react-hot-toast';
+import GoogleLoginButton from "../../components/Buttons/GoogleLoginButton";
+
+
+
 
 function Signup() {
   const [formdata, setFormdata] = useState({
@@ -179,6 +183,7 @@ function Signup() {
                         "Signup"
                       )}
                     </button>
+                    <GoogleLoginButton/>
                   </div>
                 </form>
 
