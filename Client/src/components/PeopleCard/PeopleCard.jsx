@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import useGetOtherUsers from "../../hooks/useGetOtherUsers";
 import PeopleCardSkeleton from "../Skeletons/PeopleCardSkeleton";
+import UserProfileModal from "../Modals/UserProfileModal";
 
 function PeopleCard() {
   const { user, otherUsers } = useSelector((store) => store.user);
@@ -26,7 +27,9 @@ function PeopleCard() {
               className="w-14 h-14 rounded-full"
             />
             <div className="flex-1 min-w-0">
+              <UserProfileModal/>
               <div className="font-semibold truncate">{detail?.name}</div>
+              
               <div className="text-[#a7acaf] text-sm truncate">@{detail?.username}</div>
             </div>
             <button className="btn btn-outline text-[#FFDB00] w-24 h-8 flex-shrink-0">
