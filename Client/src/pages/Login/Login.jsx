@@ -46,7 +46,7 @@ function Login() {
         }
       );
       dispatch(getUser(res?.data?.user));
-      dispatch(setUser(response?.data?.user));
+      dispatch(setUser(res?.data?.user));
       if (res.data.success) {
         toast.success(res.data.message);
       }
