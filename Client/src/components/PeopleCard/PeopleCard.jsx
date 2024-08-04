@@ -27,7 +27,6 @@ function PeopleCard() {
               className="w-14 h-14 rounded-full"
             />
             <div className="flex-1 min-w-0">
-              <UserProfileModal/>
               <div className="font-semibold truncate">{detail?.name}</div>
               
               <div className="text-[#a7acaf] text-sm truncate">@{detail?.username}</div>
@@ -35,6 +34,7 @@ function PeopleCard() {
             <button className="btn btn-outline text-[#FFDB00] w-24 h-8 flex-shrink-0">
               FOLLOW
             </button>
+            
           </div>
         ))} </div> : 
      <PeopleCardSkeleton/>

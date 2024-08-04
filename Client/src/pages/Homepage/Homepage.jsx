@@ -8,15 +8,17 @@ function Homepage() {
   return (
     <>
       <div>
-        <div className="grid grid-cols-7 gap-4">
-          <Sidebar />
-          <div className="col-span-5">
+        <div className="xl:grid xl:grid-cols-7 xl:gap-4">
+          <div className="xl:col-span-2 xl:block hidden">
+          <Sidebar/>
+          </div>
+          <div className="xl:col-span-5 xl:ml-0 md:ml-16 sm:ml-8 ml-6">
             <Content />
           </div>
         </div>
       </div>
     </>
-  );
+  )
 }
 
 export default Homepage;
