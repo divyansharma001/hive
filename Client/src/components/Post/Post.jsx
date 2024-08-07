@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FaRegHeart, FaHeart, FaReply } from "react-icons/fa";
 import { TbMessage2Plus } from "react-icons/tb";
+import useGetPosts from "../../hooks/useGetPosts";
+import { useSelector } from "react-redux";
 
 function Post() {
   const [likedPost, setLikedPost] = useState(false);
@@ -8,6 +10,8 @@ function Post() {
   const [likedReply, setLikedReply] = useState(false);
   const [replyLikes, setReplyLikes] = useState(0);
   const [replies, setReplies] = useState([]);
+
+  const {user} = useSelector((store) => store.user);
 
   const handlePostLike = () => {
     setLikedPost(!likedPost);
@@ -19,6 +23,7 @@ function Post() {
     setReplyLikes(likedReply ? replyLikes - 1 : replyLikes + 1);
   };
 
+  useGetPosts(user?.id)
   
 
   return (
