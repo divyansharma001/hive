@@ -97,7 +97,7 @@ export const likeOrDislike = async (req, res) => {
 
 export const getAllPosts = async (req, res) => {
   try {
-    const id = req.params.id; // ID of logged in user
+    const id = req.params.id;
     const limit = parseInt(req.query.limit) || 10;
     const page = parseInt(req.query.page) || 1;
     const offset = (page - 1) * limit;
@@ -114,7 +114,24 @@ export const getAllPosts = async (req, res) => {
     const allUserIds = [id, ...loggedInUserData.following];
 
     const allPosts = await db.query(
-      "SELECT * FROM posts WHERE user_id = ANY($1) ORDER BY created_at DESC LIMIT $2 OFFSET $3",
+      `
+      SELECT
+        users.name,
+        users.username,
+        users.profile_picture,
+        posts.created_at,
+        posts.description,
+        posts.likes
+      FROM
+        users
+      INNER JOIN
+        posts ON users.id = posts.user_id
+      WHERE
+        posts.user_id = ANY($1)
+      ORDER BY
+        posts.created_at DESC
+      LIMIT $2 OFFSET $3
+      `,
       [allUserIds, limit, offset]
     );
 
