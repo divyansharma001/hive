@@ -85,9 +85,7 @@ function Post() {
           </div>
         ))
       ) : (
-        <div>
-         Follow people to see what others have posted...
-        </div>
+        <div>Follow people to see what others have posted...</div>
       )}
     </div>
   );

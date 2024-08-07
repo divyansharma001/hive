@@ -10,7 +10,7 @@ export const createPost = async (req, res) => {
       });
     }
     await db.query(
-      "INSERT INTO posts (id, description) VALUES ($1, $2) RETURNING *",
+      "INSERT INTO posts (user_id, description) VALUES ($1, $2) RETURNING *",
       [id, description]
     );
     return res.status(201).json({
