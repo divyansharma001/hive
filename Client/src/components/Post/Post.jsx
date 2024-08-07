@@ -57,7 +57,9 @@ function Post() {
             <div className="flex flex-col justify-between">
               <div>
                 <h2 className="text-white font-normal pt-4">{post.name}</h2>
-                <p className="text-[#a7acaf] text-sm font-light">@{post.username}</p>
+                <p className="text-[#a7acaf] text-sm font-light">
+                  @{post.username}
+                </p>
               </div>
               <div className="text-white pt-3 text-xl">{post.description}</div>
               <div className="pt-3 text-[#7d8081] text-sm">
@@ -83,7 +85,9 @@ function Post() {
           </div>
         ))
       ) : (
-        <div>Loading...</div>
+        <div>
+         Follow people to see what others have posted...
+        </div>
       )}
     </div>
   );
