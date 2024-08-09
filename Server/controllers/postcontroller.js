@@ -41,7 +41,7 @@ export const likeOrDislike = async (req, res) => {
   try {
     const loggedInUserId = req.body.id;
     const postId = req.params.id;
-
+   
     console.log(
       `Received request to like/dislike post. User ID: ${loggedInUserId}, Post ID: ${postId}`
     );

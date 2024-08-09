@@ -3,7 +3,7 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { TbMessage2Plus } from "react-icons/tb";
 import useGetPosts from "../../hooks/useGetPosts";
 import { useSelector } from "react-redux";
-import moment from "moment"; // Assuming moment.js is installed
+import moment from "moment"; 
 
 function Post() {
   const { user } = useSelector((store) => store.user);
@@ -11,18 +11,12 @@ function Post() {
 
   useGetPosts(user?.id);
 
-  const handlePostLike = (postId) => {
-    setPosts((prevPosts) =>
-      prevPosts.map((post) =>
-        post.id === postId
-          ? {
-              ...post,
-              liked: !post.liked,
-              likes: post.liked ? post.likes - 1 : post.likes + 1,
-            }
-          : post
-      )
-    );
+  const handlePostLike = async (id) => {
+    try {
+      const res = await axios.put();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {

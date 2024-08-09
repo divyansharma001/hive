@@ -4,11 +4,16 @@ import { MdOutlineLocationOn } from "react-icons/md";
 import { LuCalendarDays } from "react-icons/lu";
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRefresh } from "../../redux/postSlice";
 
 function CreatePost() {
   const [description, setDescription] = useState("");
   const { user } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+
+  const {refresh} = useSelector(store=>store.post)
+
 
   const submitHandler = async () => {
     try {
@@ -17,10 +22,11 @@ function CreatePost() {
         { id: user?.id, description },
         { withCredentials: true }
       );
-
+      dispatch(getRefresh())
       if (res?.data?.success) {
         toast.success(res?.data?.message);
       }
+      setDescription("");
     } catch (error) {
       toast.error(error?.response?.data?.message || "Something went wrong");
       console.error(error);

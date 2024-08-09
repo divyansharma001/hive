@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts } from "../redux/postSlice";
 
 const useGetPosts = (id) => {
   const dispatch = useDispatch();
+  const {refresh} = useSelector(store=>store.post)
   useEffect(() => {
     const fetchMyPosts = async () => {
       try {
@@ -22,7 +23,7 @@ const useGetPosts = (id) => {
     };
 
     fetchMyPosts();
-  }, []);
+  }, [refresh]);
 };
 
 export default useGetPosts;
