@@ -2,20 +2,37 @@ import React, { useState, useEffect } from "react";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { TbMessage2Plus } from "react-icons/tb";
 import useGetPosts from "../../hooks/useGetPosts";
-import { useSelector } from "react-redux";
-import moment from "moment"; 
+import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
+import toast from 'react-hot-toast';
+import { getRefresh } from "../../redux/postSlice";
+import axios from 'axios';
 
 function Post() {
   const { user } = useSelector((store) => store.user);
   const { posts } = useSelector((store) => store.post);
+  const dispatch = useDispatch();
+  const [postsState, setPosts] = useState(posts || []);
 
   useGetPosts(user?.id);
 
   const handlePostLike = async (id) => {
     try {
-      const res = await axios.put();
+      const res = await axios.put(`${import.meta.env.VITE_POST_API_END_POINT}/like/${id}`, {
+        id: user?.id,
+      }, {
+        withCredentials: true
+      });
+
+      if (res.data.success) {
+        dispatch(getRefresh());
+        toast.success(res.data.message);
+      } else {
+        toast.error("Something went wrong.");
+      }
     } catch (error) {
       console.error(error);
+      toast.error(error.response?.data?.message || "An error occurred");
     }
   };
 
@@ -24,14 +41,12 @@ function Post() {
       setPosts(
         posts.map((post) => ({
           ...post,
-          liked: false,
-          likes: post.likes || 0,
+          liked: post.likes.includes(user?.id),
+          likes: Array.isArray(post.likes) ? post.likes : [],
         }))
       );
     }
-  }, [posts]);
-
-  const [postsState, setPosts] = useState(posts || []);
+  }, [posts, user?.id]);
 
   return (
     <div className="bg-[rgb(15,16,18)] w-11/12 rounded-xl flex flex-col p-4 mt-6">
@@ -61,7 +76,7 @@ function Post() {
               </div>
               <div className="pt-2 flex items-center">
                 <button
-                  onClick={() => handlePostLike(post.id)}
+                  onClick={() => handlePostLike(post.postid)}
                   className="focus:outline-none"
                 >
                   {post.liked ? (
@@ -70,7 +85,7 @@ function Post() {
                     <FaRegHeart className="text-white" />
                   )}
                 </button>
-                <span className="ml-2 text-white">{post.likes}</span>
+                <span className="ml-2 text-white">{post.likes.length}</span>
                 <button className="focus:outline-none ml-4">
                   <TbMessage2Plus className="text-white" />
                 </button>

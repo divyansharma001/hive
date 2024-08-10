@@ -46,7 +46,7 @@ export const likeOrDislike = async (req, res) => {
       `Received request to like/dislike post. User ID: ${loggedInUserId}, Post ID: ${postId}`
     );
 
-    const posts = await db.query("SELECT * FROM posts WHERE id=$1", [postId]);
+    const posts = await db.query("SELECT * FROM posts WHERE postid=$1", [postId]);
     const post = posts.rows[0];
 
     if (!post) {
@@ -64,13 +64,15 @@ export const likeOrDislike = async (req, res) => {
       `Checking if user has already liked the post. User ID JSONB: ${loggedInUserIdJsonb}`
     );
 
-    console.log(post.likes.includes(+loggedInUserIdJsonb));
-    if (post.likes.includes(+loggedInUserIdJsonb)) {
-      console.log(post.likes.includes(+loggedInUserIdJsonb));
+    console.log(post.likes.includes(loggedInUserIdJsonb));
+    console.log(post.likes)
+    console.log(loggedInUserIdJsonb)
+    if (post.likes.includes(loggedInUserIdJsonb)) {
+      console.log(post.likes.includes(loggedInUserIdJsonb));
       post.likes.includes(loggedInUserIdJsonb, "json");
       console.log(`User has already liked the post. Removing like.`);
       await db.query(
-        "UPDATE posts SET likes = array_remove(likes, $1::jsonb) WHERE id = $2",
+        "UPDATE posts SET likes = array_remove(likes, $1::jsonb) WHERE postid = $2",
         [loggedInUserIdJsonb, postId]
       );
       return res.status(200).json({
@@ -79,7 +81,7 @@ export const likeOrDislike = async (req, res) => {
     } else {
       console.log(`User has not liked the post yet. Adding like.`);
       await db.query(
-        "UPDATE posts SET likes = array_append(likes, $1::jsonb) WHERE id = $2",
+        "UPDATE posts SET likes = array_append(likes, $1::jsonb) WHERE postid = $2",
         [loggedInUserIdJsonb, postId]
       );
       return res.status(200).json({
@@ -119,6 +121,7 @@ export const getAllPosts = async (req, res) => {
         users.name,
         users.username,
         users.profile_picture,
+        posts.postid,
         posts.created_at,
         posts.description,
         posts.likes
