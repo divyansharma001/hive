@@ -123,17 +123,30 @@ export const bookmarks = async (req, res) => {
       });
     }
 
-    console.log(`User details: ${JSON.stringify(userDetails)}`);
-
     const loggedInUserIdJsonb = JSON.stringify(loggedInUserId);
 
-    console.log(userDetails.bookmarks.includes(+loggedInUserIdJsonb));
+    console.log(userDetails.bookmarks.includes(userDetails.bookmarks.includes(postId)));
 
-    if (userDetails.bookmarks.includes(+loggedInUserIdJsonb)) {
+    const isBookmarked = userDetails.bookmarks.some((bookmark) => {
+      if(typeof bookmark === 'string'){
+        return bookmark === postId;
+      }
+      if(typeof bookmark === 'object' && bookmark !== null){
+        return bookmark.id === postId;
+      }
+      return false;
+    });
+
+    console.log(`user has bookmarked: ${isBookmarked}`);
+    console.log(`Bookmarked post: ${userDetails.bookmarks}`);
+    console.log(`postId: ${postId}`);
+    console.log(`loggedInUserId: ${loggedInUserIdJsonb}`);
+
+    if (isBookmarked) {
       console.log(`User has already bookmarked the post. Removing bookmark.`);
       await db.query(
         "UPDATE users SET bookmarks = array_remove(bookmarks, $1::jsonb) WHERE id = $2",
-        [postId, loggedInUserId]
+        [JSON.stringify(postId), loggedInUserId]
       );
       return res.status(200).json({
         message: "Post removed from bookmarks",
@@ -143,7 +156,7 @@ export const bookmarks = async (req, res) => {
       console.log(`User has not bookmarked the post yet. Adding bookmark.`);
       await db.query(
         "UPDATE users SET bookmarks = array_append(bookmarks, $1::jsonb) WHERE id = $2",
-        [postId, loggedInUserId]
+        [JSON.stringify(postId), loggedInUserId]
       );
       return res.status(201).json({
         message: "Post bookmarked successfully",

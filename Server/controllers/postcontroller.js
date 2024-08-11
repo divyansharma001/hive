@@ -29,8 +29,7 @@ export const createPost = async (req, res) => {
 export const deletePost = async (req, res) => {
   try {
     const { id } = req.params;
-
-    await db.query(`DELETE FROM posts WHERE id = $1`, [id]);
+    await db.query(`DELETE FROM posts WHERE postid = $1`, [id]);
     return res.status(200).json({
       message: "Tweet deleted successfully",
     });
@@ -195,6 +194,8 @@ export const getAllPosts = async (req, res) => {
         users.username,
         users.profile_picture,
         posts.postid,
+        users.bookmarks,
+        posts.user_id,
         posts.created_at,
         posts.description,
         posts.likes
