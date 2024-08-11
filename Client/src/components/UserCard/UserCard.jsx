@@ -1,12 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CiLocationOn } from "react-icons/ci";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import useGetProfile from "../../hooks/useGetProfile";
 import UserCardSkeleton from "../Skeletons/UserCardSkeleton";
+import { getMyProfile } from "../../redux/userSlice";
+import axios from "axios";
 
 function UserCard() {
   const { user, profile } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
   useGetProfile(user?.id);
+
+  useEffect(() => {
+    const fetchUpdatedProfile = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_USER_API_END_POINT}/profile/${user?.id}`,
+          {
+            withCredentials: true,
+          }
+        );
+        dispatch(getMyProfile(res?.data?.userDetails));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    // Set up an interval to fetch updated profile data
+    const intervalId = setInterval(fetchUpdatedProfile, 5000); // Fetch every 5 seconds
+
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, [user?.id, dispatch, user?.bookmarks.length, user?.followers.length, user?.following.length]);
 
   return (
     <>
