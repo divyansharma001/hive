@@ -28,7 +28,7 @@ function Post() {
         dispatch(getRefresh());
         toast.success(res.data.message);
       } else {
-        toast.error("Something went wrong.");
+        toast.error(res.data.message);
       }
     } catch (error) {
       console.error(error);
