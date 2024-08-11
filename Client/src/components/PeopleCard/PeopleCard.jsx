@@ -1,11 +1,52 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import useGetOtherUsers from "../../hooks/useGetOtherUsers";
 import PeopleCardSkeleton from "../Skeletons/PeopleCardSkeleton";
+import axios from "axios";
+import { toast } from 'react-hot-toast';
+import { setUser } from "../../redux/userSlice";
 
 function PeopleCard() {
+  const dispatch = useDispatch();
   const { user, otherUsers } = useSelector((store) => store.user);
   useGetOtherUsers(user?.id);
+
+  const [followingStatus, setFollowingStatus] = useState({});
+
+  useEffect(() => {
+    if (user && otherUsers) {
+      const status = {};
+      otherUsers.forEach(otherUser => {
+        status[otherUser.id] = user.following.includes(otherUser.id);
+      });
+      setFollowingStatus(status);
+    }
+  }, [user, otherUsers]);
+
+  const toggleFollow = async (id) => {
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_USER_API_END_POINT}/follow/${id}`,
+        { id: user?.id },
+        { withCredentials: true }
+      );
+      console.log(res.data);
+      toast.success(res.data.message);
+      
+      // Update local state
+      setFollowingStatus(prev => ({...prev, [id]: !prev[id]}));
+      
+      // Update Redux store
+      dispatch(setUser({
+        ...user,
+        following: followingStatus[id] 
+          ? user.following.filter(userId => userId !== id)
+          : [...user.following, id]
+      }));
+    } catch (error) {
+      toast.error(error.response.data.message);
+      console.error("Error toggling follow:", error);
+    }
+  };
 
   return (
     <div className="card bg-[rgb(15,16,18)] w-80 shadow-xl ml-12 text-white">
@@ -31,11 +72,16 @@ function PeopleCard() {
                     @{detail?.username}
                   </div>
                 </div>
-                <button className="btn btn-outline text-[#FFDB00] w-24 h-8 flex-shrink-0">
-                  FOLLOW
+                <button 
+                  onClick={() => toggleFollow(detail?.id)} 
+                  className={`btn btn-outline w-24 h-8 flex-shrink-0 ${
+                    followingStatus[detail?.id] ? 'text-red-500' : 'text-[#FFDB00]'
+                  }`}
+                >
+                  {followingStatus[detail?.id] ? 'UNFOLLOW' : 'FOLLOW'}
                 </button>
               </div>
-            ))}{" "}
+            ))}
           </div>
         ) : (
           <PeopleCardSkeleton />

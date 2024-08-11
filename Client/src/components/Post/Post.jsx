@@ -103,6 +103,13 @@ function Post() {
     console.log("Posts:", posts);
   }, [user, posts]);
 
+  // New effect to fetch posts when user's following list changes
+  useEffect(() => {
+    if (user?.following) {
+      dispatch(getRefresh());
+    }
+  }, [user?.following, dispatch]);
+
   return (
     <div className="bg-[rgb(15,16,18)] w-11/12 rounded-xl flex flex-col p-4 mt-6">
       {postsState.length > 0 ? (
