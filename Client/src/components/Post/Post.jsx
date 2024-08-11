@@ -34,6 +34,15 @@ function Post() {
   };
 
   const handleBookmark = async (id) => {
+    // Optimistic update
+    setPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.postid === id
+          ? { ...post, bookmarked: !post.bookmarked }
+          : post
+      )
+    );
+
     try {
       const res = await axios.put(
         `${import.meta.env.VITE_USER_API_END_POINT}/bookmark/${id}`,
@@ -42,8 +51,17 @@ function Post() {
       );
 
       toast.success(res.data.message);
-      dispatch(getRefresh());
+      // dispatch(getRefresh());
     } catch (error) {
+      // Revert the change in case of an error
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.postid === id
+            ? { ...post, bookmarked: !post.bookmarked }
+            : post
+        )
+      );
+
       console.error("Error bookmarking post:", error);
       toast.error(error.response?.data?.message || "An error occurred");
     }
@@ -138,9 +156,7 @@ function Post() {
                   onClick={() => handleBookmark(post.postid)}
                   className="focus:outline-none ml-4"
                 >
-                  {user?.bookmarks?.some(
-                    (bookmark) => bookmark === post.postid || bookmark.id === post.postid
-                  ) ? (
+                  {post.bookmarked ? (
                     <MdBookmark className="text-[#FFDB00]" />
                   ) : (
                     <MdBookmarkBorder className="text-white" />
