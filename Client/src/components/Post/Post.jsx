@@ -28,7 +28,8 @@ function Post() {
         dispatch(getRefresh());
         toast.success(res.data.message);
       } else {
-        toast.error(res.data.message);
+        toast.success(res.data.message);
+        dispatch(getRefresh());
       }
     } catch (error) {
       console.error(error);
@@ -79,7 +80,7 @@ function Post() {
                   onClick={() => handlePostLike(post.postid)}
                   className="focus:outline-none"
                 >
-                  {post.liked ? (
+                  {post.likes.includes(user?.id) ? (
                     <FaHeart className="text-red-500" />
                   ) : (
                     <FaRegHeart className="text-white" />
