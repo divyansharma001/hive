@@ -5,9 +5,6 @@ import axios from "axios";
 import toast, { Toaster } from 'react-hot-toast';
 import GoogleLoginButton from "../../components/Buttons/GoogleLoginButton";
 
-
-
-
 function Signup() {
   const [formdata, setFormdata] = useState({
     email: "",

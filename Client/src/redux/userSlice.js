@@ -6,6 +6,7 @@ const userSlice = createSlice({
         user:null,
         otherUsers: null,
         profile: null,
+        
     },
     reducers:{
         getUser: (state, action)=>{

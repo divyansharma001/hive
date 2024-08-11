@@ -4,12 +4,14 @@ import useGetOtherUsers from "../../hooks/useGetOtherUsers";
 import PeopleCardSkeleton from "../Skeletons/PeopleCardSkeleton";
 import axios from "axios";
 import { toast } from 'react-hot-toast';
-import { setUser } from "../../redux/userSlice";
+import { setUser, clearUser } from "../../redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
 function PeopleCard() {
   const dispatch = useDispatch();
   const { user, otherUsers } = useSelector((store) => store.user);
   useGetOtherUsers(user?.id);
+  const navigate = useNavigate()
 
   const [followingStatus, setFollowingStatus] = useState({});
 
@@ -45,6 +47,22 @@ function PeopleCard() {
     } catch (error) {
       toast.error(error.response.data.message);
       console.error("Error toggling follow:", error);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_USER_API_END_POINT}/logout`, 
+        { withCredentials: true }
+      );
+      toast.success(res.data.message);
+      dispatch(clearUser());
+      // Redirect to login page or home page after logout
+      // You might want to use react-router's useNavigate hook for this
+      navigate('/')
+    } catch (error) {
+      toast.error("Failed to logout");
+      console.error("Error logging out:", error);
     }
   };
 
@@ -85,6 +103,15 @@ function PeopleCard() {
           </div>
         ) : (
           <PeopleCardSkeleton />
+        )}
+        
+        {user && (
+          <button 
+            onClick={handleLogout}
+            className="btn btn-outline btn-error mt-4 w-full"
+          >
+            Logout
+          </button>
         )}
       </div>
     </div>
