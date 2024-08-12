@@ -34,12 +34,9 @@ function Post() {
   };
 
   const handleBookmark = async (id) => {
-    // Optimistic update
     setPosts((prevPosts) =>
       prevPosts.map((post) =>
-        post.postid === id
-          ? { ...post, bookmarked: !post.bookmarked }
-          : post
+        post.postid === id ? { ...post, bookmarked: !post.bookmarked } : post
       )
     );
 
@@ -51,14 +48,10 @@ function Post() {
       );
 
       toast.success(res.data.message);
-      // dispatch(getRefresh());
     } catch (error) {
-      // Revert the change in case of an error
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
-          post.postid === id
-            ? { ...post, bookmarked: !post.bookmarked }
-            : post
+          post.postid === id ? { ...post, bookmarked: !post.bookmarked } : post
         )
       );
 
@@ -90,7 +83,8 @@ function Post() {
           ...post,
           liked: post.likes.includes(user?.id),
           bookmarked: user?.bookmarks?.some(
-            (bookmark) => bookmark === post.postid || bookmark.id === post.postid
+            (bookmark) =>
+              bookmark === post.postid || bookmark.id === post.postid
           ),
           likes: Array.isArray(post.likes) ? post.likes : [],
         }))
@@ -103,7 +97,6 @@ function Post() {
     console.log("Posts:", posts);
   }, [user, posts]);
 
-  // New effect to fetch posts when user's following list changes
   useEffect(() => {
     if (user?.following) {
       dispatch(getRefresh());
@@ -137,9 +130,7 @@ function Post() {
                   @{post.username}
                 </p>
               </div>
-              <div className="text-white pt-3 text-xl">
-                {post.description}
-              </div>
+              <div className="text-white pt-3 text-xl">{post.description}</div>
               <div className="pt-3 text-[#7d8081] text-sm">
                 {moment(post.created_at).format("MMMM Do YYYY, h:mm:ss a")}
               </div>

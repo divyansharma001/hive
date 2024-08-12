@@ -18,7 +18,7 @@ export const googleLogin = async (req, res) => {
         const result = await db.query("SELECT * FROM users WHERE username = $1", [username]);
 
         if (result.rows.length === 0) {
-          console.log("Unique username generated:", username); // Debugging line
+          console.log("Unique username generated:", username); 
           return username;
         }
 
@@ -47,7 +47,7 @@ export const googleLogin = async (req, res) => {
 
     if (!user) {
       const uniqueUsername = await generateUniqueUsername(name);
-      console.log("Username to be inserted:", uniqueUsername); // Debugging line
+      console.log("Username to be inserted:", uniqueUsername); 
       const result = await db.query(
         "INSERT INTO users (email, name, profile_picture, username, password) VALUES ($1, $2, $3, $4, $5) RETURNING *",
         [email, name, picture, uniqueUsername, googleAuthMarker]
