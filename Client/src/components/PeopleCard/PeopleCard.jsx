@@ -19,7 +19,7 @@ function PeopleCard() {
     if (user && otherUsers) {
       const status = {};
       otherUsers.forEach(otherUser => {
-        status[otherUser.id] = user.following.includes(otherUser.id);
+        status[otherUser.id] = user.following.includes(+otherUser.id);
       });
       setFollowingStatus(status);
     }
@@ -27,6 +27,8 @@ function PeopleCard() {
 
   const toggleFollow = async (id) => {
     try {
+      setFollowingStatus(prev => ({...prev, [id]: !prev[id]}));
+
       const res = await axios.post(`${import.meta.env.VITE_USER_API_END_POINT}/follow/${id}`,
         { id: user?.id },
         { withCredentials: true }
@@ -34,18 +36,17 @@ function PeopleCard() {
       console.log(res.data);
       toast.success(res.data.message);
       
-      // Update local state
-      setFollowingStatus(prev => ({...prev, [id]: !prev[id]}));
-      
       // Update Redux store
       dispatch(setUser({
         ...user,
         following: followingStatus[id] 
-          ? user.following.filter(userId => userId !== id)
-          : [...user.following, id]
+          ? user.following.filter(userId => userId !== +id)
+          : [...user.following, +id]
       }));
     } catch (error) {
-      toast.error(error.response.data.message);
+      // Revert the local state change if the API call fails
+      setFollowingStatus(prev => ({...prev, [id]: !prev[id]}));
+      toast.error(error.response?.data?.message || "An error occurred");
       console.error("Error toggling follow:", error);
     }
   };
@@ -57,8 +58,6 @@ function PeopleCard() {
       );
       toast.success(res.data.message);
       dispatch(clearUser());
-      // Redirect to login page or home page after logout
-      // You might want to use react-router's useNavigate hook for this
       navigate('/')
     } catch (error) {
       toast.error("Failed to logout");
@@ -73,8 +72,8 @@ function PeopleCard() {
 
         {otherUsers ? (
           <div>
-            {otherUsers?.map((detail, index) => (
-              <div className="flex items-center py-2 space-x-4" key={index}>
+            {otherUsers.map((detail) => (
+              <div className="flex items-center py-2 space-x-4" key={detail.id}>
                 <img
                   src={
                     detail?.profilePic ||
@@ -85,7 +84,6 @@ function PeopleCard() {
                 />
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold truncate">{detail?.name}</div>
-
                   <div className="text-[#a7acaf] text-sm truncate">
                     @{detail?.username}
                   </div>
