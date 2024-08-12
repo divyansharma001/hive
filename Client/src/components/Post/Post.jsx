@@ -112,7 +112,7 @@ function Post() {
 
   return (
     <div className="bg-[rgb(15,16,18)] w-11/12 rounded-xl flex flex-col p-4 mt-6">
-      {postsState.length > 0 ? (
+      {postsState?.length > 0 ? (
         postsState.map((post, index) => (
           <div
             className={`flex mb-6 p-4 rounded-lg ${
@@ -132,7 +132,7 @@ function Post() {
             </div>
             <div className="flex flex-col justify-between">
               <div>
-                <h2 className="text-white font-normal pt-4">{post.name}</h2>
+                <h2 className="text-white font-normal pt-4">{post?.name}</h2>
                 <p className="text-[#a7acaf] text-sm font-light">
                   @{post.username}
                 </p>
@@ -145,7 +145,7 @@ function Post() {
               </div>
               <div className="pt-2 flex items-center">
                 <button
-                  onClick={() => handlePostLike(post.postid)}
+                  onClick={() => handlePostLike(post?.postid)}
                   className="focus:outline-none"
                 >
                   {post.likes.includes(user?.id) ? (
@@ -154,13 +154,13 @@ function Post() {
                     <FaRegHeart className="text-white" />
                   )}
                 </button>
-                <span className="ml-2 text-white">{post.likes.length}</span>
+                <span className="ml-2 text-white">{post.likes?.length}</span>
                 <button className="focus:outline-none ml-4">
                   <TbMessage2Plus className="text-white" />
                 </button>
 
                 <button
-                  onClick={() => handleBookmark(post.postid)}
+                  onClick={() => handleBookmark(post?.postid)}
                   className="focus:outline-none ml-4"
                 >
                   {post.bookmarked ? (
