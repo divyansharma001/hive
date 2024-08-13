@@ -92,7 +92,7 @@ function Post() {
     }
   }, [posts, user?.id, user?.bookmarks]);
 
-  useEffect(() => {
+  useEffect(() => { 
     console.log("User:", user);
     console.log("Posts:", posts);
   }, [user, posts]);
