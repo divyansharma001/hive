@@ -31,7 +31,7 @@ function UserCard() {
 
     // Clean up the interval when the component unmounts
     return () => clearInterval(intervalId);
-  }, [user?.id, dispatch, user?.bookmarks.length, user?.followers.length, user?.following.length]);
+  }, [user?.id, dispatch, user?.bookmarks?.length, user?.followers?.length, user?.following?.length]);
 
   return (
     <>
@@ -64,15 +64,15 @@ function UserCard() {
               <div className="flex">
                 <div className="text-[#a7acaf] px-3 pt-2">
                   Bookmarks
-                  <div className="text-white">{profile?.bookmarks.length}</div>
+                  <div className="text-white">{profile?.bookmarks?.length}</div>
                 </div>
                 <div className="text-[#a7acaf] px-3 pt-2">
                   Followers
-                  <div className="text-white">{profile?.followers.length}</div>
+                  <div className="text-white">{profile?.followers?.length}</div>
                 </div>
                 <div className="text-[#a7acaf] px-3 pt-2">
                   Following
-                  <div className="text-white">{profile?.following.length}</div>
+                  <div className="text-white">{profile?.following?.length}</div>
                 </div>
               </div>
             </div>
