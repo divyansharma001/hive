@@ -1,9 +1,4 @@
 import pg from 'pg';
-// import dotenv from 'dotenv';
-
-// dotenv.config({
-//     path: '../.env'
-// });
 
 const dbConfig = {
     user: process.env.DB_USER,
