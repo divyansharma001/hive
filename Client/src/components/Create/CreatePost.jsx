@@ -13,7 +13,9 @@ function CreatePost() {
   const dispatch = useDispatch();
 
   const {refresh} = useSelector(store=>store.post)
-
+  
+      
+  console.log("data", user?.profile_picture)
 
   const submitHandler = async () => {
     try {
@@ -27,17 +29,20 @@ function CreatePost() {
         toast.success(res?.data?.message);
       }
       setDescription("");
+
     } catch (error) {
       toast.error(error?.response?.data?.message || "Something went wrong");
       console.error(error);
     }
   };
 
+
+
   return (
     <div className="bg-[rgb(15,16,18)] w-11/12 rounded-xl flex flex-col p-4">
       <div className="flex">
         <img
-          src="https://thumbs.dreamstime.com/b/cute-cat-portrait-square-photo-beautiful-white-closeup-105311158.jpg"
+          src={user?.profile_picture}
           alt="Profile Picture"
           className="rounded-full h-20 w-20 border border-white"
         />

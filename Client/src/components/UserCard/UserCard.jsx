@@ -39,8 +39,9 @@ function UserCard() {
         <div>
           <div className="card bg-[rgb(15,16,18)] w-80 shadow-xl ml-12 text-white " >
             <figure className="px-10 pt-10">
+              {console.log("userCar", profile)}
               <img
-               src={profile?.profile_picture ? profile?.profile_picture : "https://t4.ftcdn.net/jpg/00/65/77/27/360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.webp"}
+               src={user?.profile_picture}
                 alt="Profile Pic"
                 className="rounded-full h-24 w-24"
               />
