@@ -66,53 +66,44 @@ function PeopleCard() {
   };
 
   return (
-    <div className="card bg-[rgb(15,16,18)] w-80 shadow-xl ml-12 text-white">
-      <div className="card-body">
-        <h2 className="font-semibold text-xl text-center">Who to follow</h2>
-
-        {otherUsers ? (
-          <div>
-            {otherUsers.map((detail) => (
-              <div className="flex items-center py-2 space-x-4" key={detail.id}>
-                <img
-                  src={
-                    detail?.profilePic ||
-                    "https://t4.ftcdn.net/jpg/00/65/77/27/360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.webp"
-                  }
-                  alt="Profile"
-                  className="w-14 h-14 rounded-full"
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="font-semibold truncate">{detail?.name}</div>
-                  <div className="text-[#a7acaf] text-sm truncate">
-                    @{detail?.username}
+    <div className="card bg-hive-dark-200 w-full shadow-lg text-gray-200 rounded-xl mt-6"> {/* Added mt-6 */}
+    <div className="card-body p-4">
+      <h2 className="font-semibold text-lg text-white mb-3 px-2">Who to follow</h2>
+      {otherUsers && otherUsers.length > 0 ? (
+        <div className="space-y-3 max-h-[400px] overflow-y-auto no-scrollbar pr-1"> {/* Scrollable list */}
+          {otherUsers.map((detail) => (
+            <div className="flex items-center py-2 px-2 space-x-3 hover:bg-hive-dark-100 rounded-lg transition-colors duration-150" key={detail.id}>
+              <div className="avatar">
+                  <div className="w-10 h-10 rounded-full">
+                      <img
+                      src={detail?.profilePic || "https://t4.ftcdn.net/jpg/00/65/77/27/360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.webp"}
+                      alt="Profile"
+                      />
                   </div>
-                </div>
-                <button 
-                  onClick={() => toggleFollow(detail?.id)} 
-                  className={`btn btn-outline w-24 h-8 flex-shrink-0 ${
-                    followingStatus[detail?.id] ? 'text-red-500' : 'text-[#FFDB00]'
-                  }`}
-                >
-                  {followingStatus[detail?.id] ? 'UNFOLLOW' : 'FOLLOW'}
-                </button>
               </div>
-            ))}
-          </div>
-        ) : (
-          <PeopleCardSkeleton />
-        )}
-        
-        {user && (
-          <button 
-            onClick={handleLogout}
-            className="btn btn-outline btn-error mt-4 w-full"
-          >
-            Logout
-          </button>
-        )}
-      </div>
+              <div className="flex-1 min-w-0">
+                <div className="font-medium text-white truncate text-sm">{detail?.name}</div>
+                <div className="text-hive-gray-light text-xs truncate">@{detail?.username}</div>
+              </div>
+              <button
+                onClick={() => toggleFollow(detail?.id)}
+                className={`btn btn-xs sm:btn-sm rounded-full normal-case font-semibold ${
+                  followingStatus[detail?.id]
+                    ? 'btn-outline border-red-500 text-red-500 hover:bg-red-500 hover:text-white hover:border-red-500'
+                    : 'btn-outline border-hive-gold text-hive-gold hover:bg-hive-gold hover:text-black hover:border-hive-gold'
+                }`}
+              >
+                {followingStatus[detail?.id] ? 'Unfollow' : 'Follow'}
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        !otherUsers ? <PeopleCardSkeleton /> : <p className="text-sm text-hive-gray-light px-2">No new suggestions right now.</p>
+      )}
+      {/* Optional: "Show More" button if list is paginated */}
     </div>
+  </div>
   );
 }
 
