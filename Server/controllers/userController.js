@@ -277,3 +277,41 @@ export const follow = async (req, res) => {
     });
   }
 };
+
+
+export const getAuthenticatedUserProfile = async (req, res) => {
+  try {
+    const loggedInUserId = req.user; // This comes from isAuthenticated middleware
+
+    if (!loggedInUserId) {
+      // This case should ideally be caught by isAuthenticated, but as a safeguard
+      return res.status(401).json({ message: "User not authenticated", success: false });
+    }
+
+    const userResult = await db.query(
+      "SELECT id, email, name, username, profile_picture, followers, following, bookmarks FROM users WHERE id = $1", // Fetch all necessary fields
+      [loggedInUserId]
+    );
+
+    const userDetails = userResult.rows[0];
+
+    if (!userDetails) {
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      message: "User authenticated successfully",
+      success: true,
+      user: userDetails, // Send the user object, similar to login response
+    });
+  } catch (error) {
+    console.error(`Error in getAuthenticatedUserProfile function: ${error.message}`);
+    return res.status(500).json({
+      message: "Internal server error.",
+      success: false,
+    });
+  }
+};

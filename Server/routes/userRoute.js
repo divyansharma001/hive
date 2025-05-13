@@ -7,11 +7,15 @@ import {
   follow,
   getMyProfile,
   getOtherUserProfile,
+  getAuthenticatedUserProfile,
 } from "../controllers/userController.js";
 import isAuthenticated from "../config/auth.js";
 import { googleLogin } from "../controllers/googleAuthController.js";
 
 const router = express.Router();
+
+
+router.route("/me").get(isAuthenticated, getAuthenticatedUserProfile);
 
 router.route("/register").post(Register);
 router.route("/login").post(login);
